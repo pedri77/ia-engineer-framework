@@ -1,0 +1,60 @@
+{
+  "project": "Frontend App",
+  "last_updated": "2026-08-14",
+  "features": [
+    {
+      "id": "F001",
+      "priority": 1,
+      "area": "ui",
+      "title": "Landing page responsive",
+      "user_visible_behavior": "Pagina de inicio con hero, features y CTA. Responsive en mobile y desktop.",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: npx tsc --noEmit",
+        "Verificar: pagina carga en / sin errores",
+        "Verificar: responsive en viewport 375px y 1440px",
+        "Verificar: todos los textos tienen contraste WCAG AA"
+      ],
+      "evidence": "",
+      "notes": "Usar Server Component. Tailwind para estilos."
+    },
+    {
+      "id": "F002",
+      "priority": 2,
+      "area": "auth",
+      "title": "Auth con NextAuth.js",
+      "user_visible_behavior": "Login con email + Google OAuth. Redireccion a /dashboard tras login.",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: npm test",
+        "Verificar: /login muestra formulario",
+        "Verificar: login con credenciales validas redirige a /dashboard",
+        "Verificar: paginas protegidas redirigen a /login si no autenticado"
+      ],
+      "evidence": "",
+      "notes": "NextAuth.js v5. Usar Prisma adapter."
+    },
+    {
+      "id": "F003",
+      "priority": 3,
+      "area": "dashboard",
+      "title": "Dashboard con data fetching",
+      "user_visible_behavior": "Dashboard con metricas. Datos cargados desde API route.",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: npx tsc --noEmit",
+        "Verificar: /dashboard muestra metricas",
+        "Verificar: loading state mientras carga",
+        "Verificar: error state si API falla"
+      ],
+      "evidence": "",
+      "notes": "Server Component para data fetching. Client Component para interactividad."
+    }
+  ],
+  "status_rules": {
+    "not_started": "No se ha trabajado en esta feature",
+    "in_progress": "Se esta trabajando ahora (solo 1 a la vez)",
+    "blocked": "No se puede avanzar, motivo documentado en notes",
+    "passing": "Verificacion completa, evidencia registrada"
+  }
+}

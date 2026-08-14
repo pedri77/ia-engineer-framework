@@ -1,0 +1,61 @@
+{
+  "project": "API Backend",
+  "last_updated": "2026-08-14",
+  "features": [
+    {
+      "id": "F001",
+      "priority": 1,
+      "area": "core",
+      "title": "Health check endpoint",
+      "user_visible_behavior": "GET /api/v1/health devuelve {status: 'ok', version: '1.0.0', db: 'connected'}",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest tests/api/test_health.py",
+        "Verificar: GET /api/v1/health devuelve 200",
+        "Verificar: respuesta incluye status, version, db"
+      ],
+      "evidence": "",
+      "notes": "Verificar conexion real a PostgreSQL."
+    },
+    {
+      "id": "F002",
+      "priority": 2,
+      "area": "core",
+      "title": "CRUD de items con validacion",
+      "user_visible_behavior": "POST/GET/PUT/DELETE /api/v1/items con validacion Pydantic",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest tests/api/test_items.py",
+        "Verificar: POST crea item y devuelve 201",
+        "Verificar: GET con id invalido devuelve 404",
+        "Verificar: PUT con datos invalidos devuelve 422",
+        "Verificar: DELETE devuelve 204"
+      ],
+      "evidence": "",
+      "notes": "Usar SQLAlchemy 2.0 syntax. Pydantic v2 schemas."
+    },
+    {
+      "id": "F003",
+      "priority": 3,
+      "area": "core",
+      "title": "Busqueda con paginacion",
+      "user_visible_behavior": "GET /api/v1/items/search?q=xxx&page=1&limit=20 devuelve resultados paginados",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest tests/api/test_search.py",
+        "Verificar: busqueda por titulo funciona",
+        "Verificar: paginacion con page=2 devuelve segunda pagina",
+        "Verificar: limit max es 100",
+        "Verificar: query vacio devuelve 400"
+      ],
+      "evidence": "",
+      "notes": "Full-text search con PostgreSQL tsvector si es posible."
+    }
+  ],
+  "status_rules": {
+    "not_started": "No se ha trabajado en esta feature",
+    "in_progress": "Se esta trabajando ahora (solo 1 a la vez)",
+    "blocked": "No se puede avanzar, motivo documentado en notes",
+    "passing": "Verificacion completa, evidencia registrada"
+  }
+}

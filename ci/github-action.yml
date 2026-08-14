@@ -1,0 +1,76 @@
+name: AI Agent Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Instalar dependencias
+        run: pip install httpx
+
+      - name: Security scan
+        run: python3 hooks/security-scan.py
+
+      - name: Context check
+        run: python3 hooks/context-check.py .
+        continue-on-error: true
+
+      - name: Ejecutar evals
+        if: env.LLM_API_KEY != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Ejecutar cada dataset
+          for dataset in eval/datasets/*.jsonl; do
+            name=$(basename "$dataset" .jsonl)
+            echo "=== Evaluando: $name ==="
+            python3 eval/runners/run-evals.py \
+              --dataset "$dataset" \
+              --output "eval-results/${name}-results.jsonl" \
+              --provider anthropic \
+              --model claude-haiku-4-5 \
+              --delay 0.5
+          done
+
+      - name: CI Gate
+        if: env.LLM_API_KEY != ''
+        run: |
+          # Verificar accuracy de cada dataset
+          exit_code=0
+          for result in eval-results/*-results.jsonl; do
+            name=$(basename "$result" -results.jsonl)
+            echo "=== Gate: $name ==="
+            python3 eval/runners/ci-gate.py \
+              --results "$result" \
+              --threshold 0.7 || exit_code=1
+          done
+          exit $exit_code
+
+      - name: Resumen
+        if: always()
+        run: |
+          echo "## Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -d eval-results ]; then
+            for result in eval-results/*-results.jsonl; do
+              name=$(basename "$result" -results.jsonl)
+              echo "- **$name**: $(python3 eval/runners/ci-gate.py --results "$result" --threshold 0.7 2>&1 | tail -1)" >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "Evals no ejecutados (sin API key configurada)" >> $GITHUB_STEP_SUMMARY
+          fi

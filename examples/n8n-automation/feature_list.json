@@ -1,0 +1,60 @@
+{
+  "project": "Automation Platform",
+  "last_updated": "2026-08-14",
+  "features": [
+    {
+      "id": "F001",
+      "priority": 1,
+      "area": "webhooks",
+      "title": "Webhook receiver con validacion",
+      "user_visible_behavior": "Webhook en /webhook/incoming que valida auth header, parsea body y guarda en PostgreSQL",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest workers/tests/test_webhook_receiver.py",
+        "Verificar: POST sin auth header devuelve 401",
+        "Verificar: POST con body invalido devuelve 400",
+        "Verificar: POST valido guarda en DB y devuelve 200"
+      ],
+      "evidence": "",
+      "notes": "Usar header X-Webhook-Secret para auth."
+    },
+    {
+      "id": "F002",
+      "priority": 2,
+      "area": "pipeline",
+      "title": "Pipeline de transformacion de datos",
+      "user_visible_behavior": "Workflow que lee datos de API externa, transforma formato y guarda en tabla processed_data",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest workers/tests/test_data_transform.py",
+        "Verificar: transformacion produce formato correcto",
+        "Verificar: ejecutar 2 veces no duplica datos (idempotencia)",
+        "Verificar: error en API externa no corrompe datos parciales"
+      ],
+      "evidence": "",
+      "notes": "Usar transacciones para atomicidad."
+    },
+    {
+      "id": "F003",
+      "priority": 3,
+      "area": "notificaciones",
+      "title": "Notificacion multi-canal",
+      "user_visible_behavior": "Workflow que envia notificacion por email (Brevo) y Telegram. Si uno falla, el otro se envia igualmente.",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest workers/tests/test_notifications.py",
+        "Verificar: email se envia correctamente",
+        "Verificar: Telegram se envia correctamente",
+        "Verificar: fallo de email no bloquea Telegram"
+      ],
+      "evidence": "",
+      "notes": "Canales independientes. No depender uno del otro."
+    }
+  ],
+  "status_rules": {
+    "not_started": "No se ha trabajado en esta feature",
+    "in_progress": "Se esta trabajando ahora (solo 1 a la vez)",
+    "blocked": "No se puede avanzar, motivo documentado en notes",
+    "passing": "Verificacion completa, evidencia registrada"
+  }
+}

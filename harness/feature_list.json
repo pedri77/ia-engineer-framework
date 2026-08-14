@@ -1,0 +1,44 @@
+{
+  "project": "Tu Proyecto",
+  "last_updated": "2026-08-14",
+  "features": [
+    {
+      "id": "F001",
+      "priority": 1,
+      "area": "core",
+      "title": "Ejemplo: endpoint de busqueda",
+      "user_visible_behavior": "GET /api/search?q=xxx devuelve resultados paginados con snippets",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest tests/api/test_search.py",
+        "Verificar: respuesta incluye campo 'results' con array",
+        "Verificar: paginacion funciona con ?page=2",
+        "Verificar: snippets tienen highlight del termino buscado"
+      ],
+      "evidence": "",
+      "notes": "Usar SQLAlchemy full-text search. Ver docs/ARCHITECTURE.md para patron de endpoints."
+    },
+    {
+      "id": "F002",
+      "priority": 2,
+      "area": "auth",
+      "title": "Ejemplo: login con email y password",
+      "user_visible_behavior": "POST /api/auth/login acepta email+password, devuelve JWT",
+      "status": "not_started",
+      "verification": [
+        "Ejecutar: pytest tests/api/test_auth.py",
+        "Verificar: credenciales validas devuelven token JWT",
+        "Verificar: credenciales invalidas devuelven 401",
+        "Verificar: token expira en 24h"
+      ],
+      "evidence": "",
+      "notes": ""
+    }
+  ],
+  "status_rules": {
+    "not_started": "No se ha trabajado en esta feature",
+    "in_progress": "Se esta trabajando ahora (solo 1 a la vez)",
+    "blocked": "No se puede avanzar, motivo documentado en notes",
+    "passing": "Verificacion completa, evidencia registrada"
+  }
+}
