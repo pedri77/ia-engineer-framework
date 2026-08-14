@@ -47,6 +47,29 @@ Capa 5: ESTADO
 
 ## Arbol de decision
 
+```mermaid
+flowchart TD
+    A["Agente fallo"] --> B{"Hizo algo diferente\na lo esperado?"}
+    B -->|Si| C["Capa 1: ESPECIFICACION\nEscribe Definition of Done"]
+    B -->|No| D{"Uso patron/version/\nestilo incorrecto?"}
+    D -->|Si| E["Capa 2: CONTEXTO\nActualiza CLAUDE.md"]
+    D -->|No| F{"Error de dependencias\no tools?"}
+    F -->|Si| G["Capa 3: ENTORNO\nMejora init.sh"]
+    F -->|No| H{"Dijo 'listo' pero\nno funciona?"}
+    H -->|Si| I["Capa 4: VERIFICACION\nExige tests + evidencia"]
+    H -->|No| J{"Repitio trabajo\nde sesion anterior?"}
+    J -->|Si| K["Capa 5: ESTADO\nprogress.md + handoff"]
+    J -->|No| L["Revisar output\ncon mas detalle"]
+
+    style C fill:#d62828,color:#fff
+    style E fill:#f77f00,color:#fff
+    style G fill:#fcbf49,color:#000
+    style I fill:#2d6a4f,color:#fff
+    style K fill:#184e77,color:#fff
+```
+
+Tambien como texto:
+
 ```
 El agente hizo algo diferente a lo que esperabas?
 ├── Si → Capa 1: Especificacion

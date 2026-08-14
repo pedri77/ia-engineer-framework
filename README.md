@@ -20,27 +20,37 @@ Los modelos de IA son capaces, pero fallan en tareas reales por defectos en el e
 
 ## Arquitectura de 6 tiers
 
-```
-Tier 1: HARNESS          Control del agente (10 min setup)
-   │    CLAUDE.md, AGENTS.md, init.sh, feature_list.json
-   │
-Tier 2: EVAL             Verificacion y calidad (30 min setup)
-   │    Eval datasets, rubrics, runners, CI gates
-   │
-Tier 3: OBSERVE          Observabilidad (1h setup)
-   │    Logger, cost tracker, dashboards, alertas
-   │
-Tier 4: HOOKS            Automatización Claude Code (15 min setup)
-   │    Pre-commit, post-task, cost guard, security scan
-   │
-Tier 5: PATTERNS         Patrones de producción (lectura)
-   │    Diagnostic loop, multi-session, circuit breaker, HITL
-   │
-Tier 6: CI/CD            Integracion continúa con IA (1h setup)
-        GitHub Action, quality gates, pre-push checks
+```mermaid
+block-beta
+  columns 1
+  block:t1["Tier 1: HARNESS — Control del agente (10 min)"]
+    A1["CLAUDE.md"] A2["AGENTS.md"] A3["init.sh"] A4["feature_list.json"]
+  end
+  block:t2["Tier 2: EVAL — Verificacion y calidad (30 min)"]
+    B1["Eval datasets"] B2["Rubrics"] B3["Runners"] B4["CI gates"]
+  end
+  block:t3["Tier 3: OBSERVE — Observabilidad (1h)"]
+    C1["Agent logger"] C2["Cost tracker"] C3["Dashboards"] C4["Alertas"]
+  end
+  block:t4["Tier 4: HOOKS — Automatizacion Claude Code (15 min)"]
+    D1["Pre-commit lint"] D2["Post-task verify"] D3["Cost guard"] D4["Security scan"]
+  end
+  block:t5["Tier 5: PATTERNS — Patrones de produccion"]
+    E1["Diagnostic loop"] E2["Multi-session"] E3["Circuit breaker"] E4["Graph Eng."]
+  end
+  block:t6["Tier 6: CI/CD — Integracion continua con IA (1h)"]
+    F1["GitHub Action"] F2["Quality gate"] F3["Pre-push check"]
+  end
+
+  style t1 fill:#2d6a4f,color:#fff
+  style t2 fill:#1b4332,color:#fff
+  style t3 fill:#184e77,color:#fff
+  style t4 fill:#1e3a5f,color:#fff
+  style t5 fill:#3c1642,color:#fff
+  style t6 fill:#5a189a,color:#fff
 ```
 
-**Adopción progresiva:** empieza con Tier 1. Añade tiers cuando los necesites.
+**Adopcion progresiva:** empieza con Tier 1. Anade tiers cuando los necesites.
 
 ## Quick Start (5 minutos)
 

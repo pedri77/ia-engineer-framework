@@ -16,10 +16,31 @@ Graph Engineering trata tu pipeline como un grafo: nodos (unidades de trabajo) c
 
 Cada unidad de trabajo tiene entrada y salida definida. Si no puedes dibujar el grafo, no lo entiendes.
 
-```
-[Feed RSS] → [Parser] → [Clasificador] → [DB]
-     ↓
-[Feed API] → [Parser] → [Clasificador] → [DB]
+```mermaid
+graph LR
+    subgraph "Patron Diamante (P7)"
+        Input["Coordinator"] --> FeedRSS["Feed RSS"]
+        Input --> FeedAPI["Feed API"]
+        Input --> FeedScraper["Feed Scraper"]
+        FeedRSS --> Merge["Merge + Verify"]
+        FeedAPI --> Merge
+        FeedScraper --> Merge
+        Merge --> Output["DB"]
+    end
+
+    subgraph "Sin diamante (lento)"
+        A["Feed RSS"] --> B["Feed API"]
+        B --> C["Feed Scraper"]
+        C --> D["DB"]
+    end
+
+    style Input fill:#2d6a4f,color:#fff
+    style Merge fill:#d62828,color:#fff
+    style Output fill:#184e77,color:#fff
+    style A fill:#6c757d,color:#fff
+    style B fill:#6c757d,color:#fff
+    style C fill:#6c757d,color:#fff
+    style D fill:#6c757d,color:#fff
 ```
 
 **Test:** para cada paso, puedes escribir su input/output como JSON schema?

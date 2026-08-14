@@ -8,11 +8,31 @@ Los eval datasets son conjuntos de preguntas con respuestas esperadas. Ejecutas 
 
 ## Como funciona
 
-```
-1. Creas un dataset (JSONL con escenarios)
-2. Ejecutas run-evals.py (envia cada escenario al LLM)
-3. Ejecutas score-evals.py (compara respuestas con lo esperado)
-4. Ejecutas ci-gate.py (falla si accuracy < umbral)
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant DS as Dataset JSONL
+    participant Run as run-evals.py
+    participant LLM as LLM (API/Local)
+    participant Score as score-evals.py
+    participant Gate as ci-gate.py
+
+    Dev->>DS: Crea escenarios + expected_elements
+    Dev->>Run: --dataset mi-eval.jsonl
+    loop Cada escenario
+        Run->>LLM: Envia input
+        LLM-->>Run: Respuesta
+    end
+    Run->>Run: Guarda results.jsonl
+    Dev->>Score: --results results.jsonl
+    Score->>Score: Compara respuesta vs expected
+    Score-->>Dev: Accuracy: 87.5%
+    Dev->>Gate: --threshold 0.8
+    alt Accuracy >= threshold
+        Gate-->>Dev: PASS
+    else Accuracy < threshold
+        Gate-->>Dev: FAIL (exit 1)
+    end
 ```
 
 ## Formato de eval dataset
